@@ -12,10 +12,10 @@ nemojte da spamujete sajt
 za Visual Studio 2019 v16.3.10  samo otvorite solution.
 
 iz terminala
-git clone https://github.com/knilecrack/KursnaListaNBS.git
-cd KursnaListaNBS
-dotnet restore 
-dotnet build
-dotnet run
+- git clone https://github.com/knilecrack/KursnaListaNBS.git
+- cd KursnaListaNBS
+- dotnet restore 
+- dotnet build
+- dotnet run
 
 
