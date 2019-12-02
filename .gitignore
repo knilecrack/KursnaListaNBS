@@ -1,0 +1,6 @@
+KursnaListaNBS/bin/
+KursnaListaNBS/obj/
+KursnaListaNBS/*.html
+KursnaListaNBS/kursnalista.json
+KursnaListaNBS/utfJson.json
+/.vs
