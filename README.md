@@ -3,7 +3,7 @@
 Posto ne postoji API za fizicka lica od strane NBS(Narodne banke Srbije) parsujemo sajt.
 
 Tabela sa ovog linka:
-[NBS link to table](https://nbs.rs/kursnaListaModul/srednjiKurs.faces?lang=lat)
+[Kursna lista](https://nbs.rs/kursnaListaModul/srednjiKurs.faces?lang=lat)
 se pretvara u JSON fajl
 
 nemojte da spamujete sajt!!!
