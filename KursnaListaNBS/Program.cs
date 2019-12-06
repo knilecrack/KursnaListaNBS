@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+
 namespace KursnaListaNBS
 {
     class Program
@@ -17,8 +18,24 @@ namespace KursnaListaNBS
         ////*[@id="index:id31"]
         private const string NBSUrl = @"https://www.nbs.rs/export/sites/default/internet/latinica/scripts/kl_srednji.html";
         private const string NBSTabela = @"https://nbs.rs/kursnaListaModul/srednjiKurs.faces?lang=lat";
+        
 
         public static async Task Main(string[] args)
+        {
+            if (args.Length > 0)
+            {
+                string destinationPath = args[0];
+                await LoadTheLink(destinationPath);
+            } else
+            {
+                await LoadTheLink();
+            }
+            
+            KursnaLista novaLista = DeserializeJSON(Path.Combine(Directory.GetCurrentDirectory(), "utfjson.json"));
+
+        }
+
+        private static async Task LoadTheLink(string DestinationPath = "")
         {
             try
             {
@@ -31,7 +48,7 @@ namespace KursnaListaNBS
                         if (clientRezults.Length > 0)
                         {
                             DropToFile(clientRezults);
-                            ParseHTML();
+                            ParseHTML(DestinationPath);
                         }
                     }
                 }
@@ -41,13 +58,25 @@ namespace KursnaListaNBS
                 var rezult = ex.Message;
                 DropErrorToFile(rezult);
             }
-            KursnaLista novaLista = DeserializeJSON(Path.Combine(Directory.GetCurrentDirectory(), "utfjson.json"));
-
-
         }
-        private static void DropErrorToFile(string msg)
+
+        private static void DropErrorToFile(string msg, string Destination="")
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = string.Empty;
+            
+            
+            if( Destination.Length > 0)
+            {
+                if(Directory.Exists(Destination))
+                {
+                    path = Destination;
+                }
+            }
+            else
+            {
+                path = Directory.GetCurrentDirectory();
+            }
+
             string filepath = Path.Combine(path, "error.txt");
             if (File.Exists(filepath))
             {
@@ -73,7 +102,7 @@ namespace KursnaListaNBS
             }
         }
 
-        private static void ParseHTML()
+        private static void ParseHTML(string DstPath="")
         {
             List<string> TableHead = new List<string>();
             var htmlDoc = new HtmlDocument();
@@ -107,7 +136,7 @@ namespace KursnaListaNBS
                 {
                     System.Console.WriteLine(item);
                 }
-                DropToJSON(lista);
+                DropToJSON(lista, DstPath);
             }
             catch (Exception ex)
             {
@@ -116,16 +145,21 @@ namespace KursnaListaNBS
             }
         }
 
-        private static void DropToJSON(KursnaLista KursnaLista)
+        private static void DropToJSON(KursnaLista KursnaLista, string dstPath = "")
         {
-            var getCurrentDir = Directory.GetCurrentDirectory();
+            string GetCurrentDir = Directory.GetCurrentDirectory();
+            if (dstPath.Length > 0 && Directory.Exists(dstPath))
+            {
+                GetCurrentDir = dstPath;
+            }
+            
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = new UpperCaseNamingPolicy(),
                 WriteIndented = true
             };
             byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(KursnaLista, options);
-            File.WriteAllBytes(Path.Combine(getCurrentDir, "utfjson.json"), jsonBytes);
+            File.WriteAllBytes(Path.Combine(GetCurrentDir, "utfjson.json"), jsonBytes);
         }
 
         private static void IspisiZaglavlje(List<string> TableHead, HtmlNode tableHead)
