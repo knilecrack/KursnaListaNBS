@@ -26,4 +26,4 @@ dotnet run
 ako treba moze da se pokrene sa pathom npr: c:\temp i JSON ce biti generisan c:\temp\kursnalista.json
 
 TODO:
-Treba napraviti argument parser za app, da mogu normalno da se proslede arugmenti gde ce da se generise JSON trenutno je nubovski odradjeno samo da radi
+- [ ] Treba napraviti argument parser za app, da mogu normalno da se proslede arugmenti gde ce da se generise JSON trenutno je nubovski odradjeno samo da radi
